@@ -37,7 +37,7 @@ done
 # package setup plugin
 
 ## contents
-i. pageGTK
+1. pageGTK
     > frontend - commuicate with user
 
 2. page
