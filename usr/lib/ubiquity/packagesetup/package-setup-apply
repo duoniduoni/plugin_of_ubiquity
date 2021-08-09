@@ -1,0 +1,23 @@
+#!/bin/bash -e
+
+. /usr/share/debconf/confmodule
+
+if [ "$1" ]; then
+	export LANG=C # avoid locale errors from perl
+	ROOT="$1"
+	chroot=chroot
+	log='log-output -t user-setup'
+else
+	ROOT=
+	chroot=
+	log=
+fi
+
+db_get package-setup/package-path
+if [ "$RET" = true ] && [ ! -d "$RET" ]; then
+    # begin to setup packages 
+    for FILE in $RET/*.deb
+    do
+        $chroot $ROOT dpkg -i $FILE
+    done
+fi
