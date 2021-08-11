@@ -51,3 +51,6 @@ done
 
 1. v0.01
     > frame is done, include page and install plugin; working on UI.
+
+1. v0.02
+    > UI is done， begin to debug.
