@@ -54,3 +54,6 @@ done
 
 1. v0.02
     > UI is done， begin to debug.
+
+1. v0.03
+    > debug is done, install plugin not verify.

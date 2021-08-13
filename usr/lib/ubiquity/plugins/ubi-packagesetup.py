@@ -4,13 +4,13 @@ import debconf
 from ubiquity import misc, plugin, validation
 
 NAME = 'packagesetup'
-WEIGHT = 12
-AFTER = 'welcome'
+WEIGHT = 13
+AFTER = 'language'
 
 
 class PageBase(plugin.PluginUI):
     def __init__(self):
-        pass
+        plugin.PluginUI.__init__(self)
 
     def get_deb_path(self):
         """Set the user's full name."""
@@ -23,6 +23,8 @@ class PageGtk(PageBase):
     def __init__(self, controller, *args, **kwargs):
         from gi.repository import Gio, Gtk
 
+        self.controller = controller
+
         builder = Gtk.Builder()
         self.controller.add_builder(builder)
         builder.add_from_file(os.path.join(
@@ -31,8 +33,10 @@ class PageGtk(PageBase):
         self.page = builder.get_object('stepPackageSetup')
         self.deb_path = builder.get_object('entry_packagePath')
 
+        self.plugin_widgets = self.page
+
     def get_deb_path(self):
-        return self.deb_path
+        return self.deb_path.get_text()
 
     def on_btn_packagePath_clicked(self, button):
         from gi.repository import Gio, Gtk
@@ -50,7 +54,7 @@ class PageGtk(PageBase):
         if response == Gtk.ResponseType.OK:
             print("Select clicked")
             print("Folder selected: " + dialog.get_filename())
-            self.deb_path = dialog.get_filename()
+            self.deb_path.set_text(dialog.get_filename())
         elif response == Gtk.ResponseType.CANCEL:
             print("Cancel clicked")
 
@@ -75,7 +79,7 @@ class Page(plugin.Plugin):
 
         self.preseed('package-setup/package-path', '/tmp/')
 
-        return questions, command
+        return command, questions
 
     def run(self, priority, question):
         return plugin.Plugin.run(self, priority, question)

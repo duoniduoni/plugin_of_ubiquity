@@ -14,3 +14,8 @@ else
 fi
 
 db_input critical package-setup/package-path
+
+db_get package-setup/package-path
+#if [ -d "$RET" ]; then
+#	echo $RET > /home/zhangsong/pp.log
+#fi
