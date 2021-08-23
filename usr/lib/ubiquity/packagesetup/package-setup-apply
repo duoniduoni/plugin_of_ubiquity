@@ -21,3 +21,12 @@ if [ -d "$RET" ]; then
         $chroot $ROOT dpkg -i $FILE
     done
 fi
+
+db_get package-setup/hook-path
+if [ -d "$RET" ]; then
+    # begin to exec hook
+    for FILE in $RET/*.hook
+    do
+        $chroot $ROOT sh $FILE
+    done
+fi

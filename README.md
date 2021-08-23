@@ -57,3 +57,6 @@ done
 
 1. v0.03
     > debug is done, install plugin not verify.
+
+1. v0.04
+    > add hook.

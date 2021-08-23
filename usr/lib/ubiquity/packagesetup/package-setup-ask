@@ -2,6 +2,8 @@
 
 . /usr/share/debconf/confmodule
 
+zs_debug=0
+
 if [ "$1" ]; then
 	export LANG=C # avoid locale errors from perl
 	ROOT="$1"
@@ -14,8 +16,13 @@ else
 fi
 
 db_input critical package-setup/package-path
+db_input critical package-setup/hook-path
 
 db_get package-setup/package-path
-#if [ -d "$RET" ]; then
-#	echo $RET > /home/zhangsong/pp.log
-#fi
+if [ -d "$RET" ] && [ $zs_debug = 1 ]; then
+	echo $RET > /home/zhangsong/pp.log
+fi
+db_get package-setup/hook-path
+if [ -d "$RET" ] && [ $zs_debug = 1 ]; then
+	echo $RET >> /home/zhangsong/pp.log
+fi

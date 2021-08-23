@@ -16,6 +16,10 @@ class PageBase(plugin.PluginUI):
         """Set the user's full name."""
         raise NotImplementedError('get_deb_path')
 
+    def get_hook_path(self):
+        """Set the user's full name."""
+        raise NotImplementedError('get_hook_path')
+
 
 class PageGtk(PageBase):
     plugin_title = 'ubiquity/text/packagesetup_heading_label'
@@ -32,11 +36,15 @@ class PageGtk(PageBase):
         builder.connect_signals(self)
         self.page = builder.get_object('stepPackageSetup')
         self.deb_path = builder.get_object('entry_packagePath')
+        self.hook_path = builder.get_object('entry_hookPath')
 
         self.plugin_widgets = self.page
 
     def get_deb_path(self):
         return self.deb_path.get_text()
+
+    def get_hook_path(self):
+        return self.hook_path.get_text()
 
     def on_btn_packagePath_clicked(self, button):
         from gi.repository import Gio, Gtk
@@ -60,6 +68,28 @@ class PageGtk(PageBase):
 
         dialog.destroy()
 
+    def on_btn_hookPath_clicked(self, button):
+        from gi.repository import Gio, Gtk
+        dialog = Gtk.FileChooserDialog(
+            title="Please choose a folder",
+            #parent=self,
+            action=Gtk.FileChooserAction.SELECT_FOLDER,
+        )
+        dialog.add_buttons(
+            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, "Select", Gtk.ResponseType.OK
+        )
+        dialog.set_default_size(800, 400)
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            print("Select clicked")
+            print("Folder selected: " + dialog.get_filename())
+            self.hook_path.set_text(dialog.get_filename())
+        elif response == Gtk.ResponseType.CANCEL:
+            print("Cancel clicked")
+
+        dialog.destroy()
+
 
 
 class PageKde(PageBase):
@@ -71,13 +101,17 @@ class PageKde(PageBase):
 
 class Page(plugin.Plugin):
     def prepare(self, unfiltered=False):
-        questions = ['^package-setup/package-path',]
+        questions = [
+            '^package-setup/package-path',
+            '^package-setup/hook-path',
+        ]
         command = [
                 'sh', '-c',
                 '/usr/lib/ubiquity/packagesetup/package-setup-ask /target',
             ]
 
         self.preseed('package-setup/package-path', '/tmp/')
+        self.preseed('package-setup/hook-path', '/tmp/')
 
         return command, questions
 
@@ -86,7 +120,9 @@ class Page(plugin.Plugin):
 
     def ok_handler(self):
         deb_path = self.ui.get_deb_path()
+        hook_path = self.ui.get_hook_path()
         self.preseed('package-setup/package-path', deb_path)
+        self.preseed('package-setup/hook-path', hook_path)
 
         plugin.Plugin.ok_handler(self)
 
