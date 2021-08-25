@@ -52,11 +52,14 @@ done
 1. v0.01
     > frame is done, include page and install plugin; working on UI.
 
-1. v0.02
+2. v0.02
     > UI is done， begin to debug.
 
-1. v0.03
+3. v0.03
     > debug is done, install plugin not verify.
 
-1. v0.04
+4. v0.04
     > add hook.
+
+5. v0.05
+    > fix error.

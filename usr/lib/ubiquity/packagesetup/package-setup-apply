@@ -13,12 +13,16 @@ else
 	log=
 fi
 
+mkdir $ROOT/zs_tmp
+
 db_get package-setup/package-path
 if [ -d "$RET" ]; then
     # begin to setup packages 
     for FILE in $RET/*.deb
     do
-        $chroot $ROOT dpkg -i $FILE
+        cp $FILE $ROOT/zs_tmp/tmp.deb
+        $chroot $ROOT dpkg -i zs_tmp/tmp.deb
+        rm zs_tmp/tmp.deb
     done
 fi
 
@@ -27,6 +31,10 @@ if [ -d "$RET" ]; then
     # begin to exec hook
     for FILE in $RET/*.hook
     do
-        $chroot $ROOT sh $FILE
+        cp $FILE $ROOT/zs_tmp/tmp.hook
+        $chroot $ROOT zs_tmp/tmp.hook
+        rm zs_tmp/tmp.hook
     done
 fi
+
+rm -rf $ROOT/zs_tmp
