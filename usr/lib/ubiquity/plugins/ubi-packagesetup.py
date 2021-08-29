@@ -126,6 +126,9 @@ class Page(plugin.Plugin):
 
         plugin.Plugin.ok_handler(self)
 
+    def cleanup(self):
+        plugin.Plugin.cleanup(self)
+
     
 class Install(plugin.InstallPlugin):
     def prepare(self, unfiltered=False):

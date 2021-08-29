@@ -63,3 +63,6 @@ done
 
 5. v0.05
     > fix error.
+
+6. v0.06
+    > add cleanup method.
