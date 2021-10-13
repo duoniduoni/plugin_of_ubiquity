@@ -66,3 +66,7 @@ done
 
 6. v0.06
     > add cleanup method.
+
+7. v0.07
+    > add log
+    > change plugin index

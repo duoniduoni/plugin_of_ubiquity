@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 . /usr/share/debconf/confmodule
+. /usr/share/ubiquity/packagesetup/funcs.sh
 
 if [ "$1" ]; then
 	export LANG=C # avoid locale errors from perl
@@ -16,10 +17,15 @@ fi
 mkdir $ROOT/zs_tmp
 
 db_get package-setup/package-path
+screenmsg "package-setup/package-path -----> "$RET
+
 if [ -d "$RET" ]; then
     # begin to setup packages 
+    screenmsg "begin to setup packages"
+
     for FILE in $RET/*.deb
     do
+        screenmsg "try to install deb : "$FILE
         cp $FILE $ROOT/zs_tmp/tmp.deb
         $chroot $ROOT dpkg -i zs_tmp/tmp.deb
         rm zs_tmp/tmp.deb
@@ -27,10 +33,15 @@ if [ -d "$RET" ]; then
 fi
 
 db_get package-setup/hook-path
+screenmsg "package-setup/hook-path -----> "$RET
+
 if [ -d "$RET" ]; then
     # begin to exec hook
+    screenmsg "begin to exec hook"
+
     for FILE in $RET/*.hook
     do
+        screenmsg "try to exec : "$FILE
         cp $FILE $ROOT/zs_tmp/tmp.hook
         $chroot $ROOT zs_tmp/tmp.hook
         rm zs_tmp/tmp.hook

@@ -5,7 +5,7 @@ from ubiquity import misc, plugin, validation
 
 NAME = 'packagesetup'
 WEIGHT = 13
-AFTER = 'language'
+BEFORE = 'partman'
 
 
 class PageBase(plugin.PluginUI):
@@ -136,8 +136,8 @@ class Install(plugin.InstallPlugin):
                 'sh', '-c',
                 '/usr/lib/ubiquity/packagesetup/package-setup-apply /target',
             ]
-        return command, [], []    
+        return command, [], []
 
     def install(self, target, progress, *args, **kwargs):
         return plugin.InstallPlugin.install(
-            self, target, progress, *args, **kwargs)   
+            self, target, progress, *args, **kwargs)
