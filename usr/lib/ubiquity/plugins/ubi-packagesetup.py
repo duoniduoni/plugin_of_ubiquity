@@ -136,7 +136,7 @@ class Install(plugin.InstallPlugin):
                 'sh', '-c',
                 '/usr/lib/ubiquity/packagesetup/package-setup-apply /target',
             ]
-        return command, [], []
+        return command, [], {}
 
     def install(self, target, progress, *args, **kwargs):
         return plugin.InstallPlugin.install(

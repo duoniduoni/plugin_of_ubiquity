@@ -70,3 +70,6 @@ done
 7. v0.07
     > add log
     > change plugin index
+
+8. v0.08
+    >fix bugs
